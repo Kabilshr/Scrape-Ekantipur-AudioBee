@@ -30,7 +30,8 @@ def scrape_entertainment(page: Page) -> list[dict]:
         # Some images might be lazy-loaded with data-src or similar attributes
         image_url = img_el.get_attribute("src") or img_el.get_attribute("data-src")
         title = card.locator(".category-description > h2").inner_text().strip()
-        author = card.locator(".author-name>p>a").inner_text().strip()
+        author_text = card.locator(".author-name>p>a").inner_text().strip()
+        author = author_text if author_text else "null"
         articles.append(
             {
                 "title": title,
@@ -39,8 +40,8 @@ def scrape_entertainment(page: Page) -> list[dict]:
                 "author": author,
             }
         )
-    print(articles)
-
+        print(articles)
+ 
 
     return articles
 
@@ -50,9 +51,18 @@ def scrape_cartoon_of_the_day(page: Page) -> dict:
     section.locator("a", has_text="कार्टुन").click()
     page.wait_for_load_state("domcontentloaded")
 
+    cartoon = page.locator(".cartoon-wrapper").first
+    image_url = cartoon.locator(".cartoon-image > figure > a > img").get_attribute("src")
+    title = cartoon.locator(".cartoon-description > p").first.inner_text().strip()
+
+    author_el = cartoon.locator(".author-name > p > a")
+    author = author_el.first.inner_text().strip() if author_el.count() else "null"
+
+    print(f"Title: {title}, Image URL: {image_url}, Author: {author}")
     return {
-        "url": page.url,
-        "image_url": page.locator("img").first.get_attribute("src"),
+        "title": title,
+        "image_url": image_url,
+        "author": author,
     }
 
 
@@ -76,10 +86,8 @@ def main() -> None:
         page = browser.new_page()
         page.goto(BASE_URL, wait_until="domcontentloaded")
 
-        dismiss_pagegate_modal(page)
-
-        #cartoon = scrape_cartoon_of_the_day(page)
         entertainment_articles = scrape_entertainment(page)
+        cartoon = scrape_cartoon_of_the_day(page)
 
         #write_output(build_output(entertainment_articles, cartoon))
 

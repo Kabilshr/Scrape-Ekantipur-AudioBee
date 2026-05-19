@@ -43,4 +43,15 @@ edit this to extract the src from the given image tag ".category-image > a > fig
 ---
 the img url is in this format
 
+Prompt 4:
+now for scrape_cartoon_of_the_day function
 
+after navigating to the page. take the first element; which is: first .cartoon-wrapper element
+
+---
+<div class="cartoon-wrapper"><div class="cartoon-image"><figure><a href="https://assets-cdn-api.ekantipur.com/thumb.php?src=https://assets-cdn.ekantipur.com/uploads/source/news/kantipur/2022/third-party/gajab-chha-ba-830202-1652026045039-1000x0.jpg&amp;w=601&amp;h=0" data-fancybox="gallery" data-thumb="https://assets-cdn-api.ekantipur.com/thumb.php?src=https://assets-cdn.ekantipur.com/uploads/source/news/kantipur/2022/third-party/gajab-chha-ba-830202-1652026045039-1000x0.jpg&amp;w=601&amp;h=0" data-type="image"><img class="loaded" alt="गजब छ बा" src="https://assets-cdn-api.ekantipur.com/thumb.php?src=https://assets-cdn.ekantipur.com/uploads/source/news/kantipur/2022/third-party/gajab-chha-ba-830202-1652026045039-1000x0.jpg&amp;w=601&amp;h=0"></a></figure></div><div class="cartoon-description"><p>गजब छ बा! - </p><div class="date"><p translate="no">जेष्ठ २, २०८३</p></div></div></div>
+---
+this is the element. 
+image: .cartoon-image>figure>a>img 
+title: .cartoon-description>p
+author: try to add a author locator but have a fall back to null if not found. only write the function. do not run

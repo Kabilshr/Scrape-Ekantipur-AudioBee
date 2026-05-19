@@ -40,19 +40,22 @@ def scrape_entertainment(page: Page) -> list[dict]:
                 "author": author,
             }
         )
-        print(articles)
- 
+    print(articles)
+    
 
     return articles
 
 
 def scrape_cartoon_of_the_day(page: Page) -> dict:
+
+    dismiss_pagegate_modal(page)
     section = page.locator("section.e-section").filter(has_text="कार्टुन")
     section.locator("a", has_text="कार्टुन").click()
     page.wait_for_load_state("domcontentloaded")
 
     cartoon = page.locator(".cartoon-wrapper").first
-    image_url = cartoon.locator(".cartoon-image > figure > a > img").get_attribute("src")
+    img_el = cartoon.locator(".cartoon-image > figure > a > img")
+    image_url = img_el.get_attribute("src") or img_el.get_attribute("data-src")
     title = cartoon.locator(".cartoon-description > p").first.inner_text().strip()
 
     author_el = cartoon.locator(".author-name > p > a")
@@ -66,14 +69,15 @@ def scrape_cartoon_of_the_day(page: Page) -> dict:
     }
 
 
-def build_output(entertainment_articles: list[dict], cartoon: dict) -> dict:
-    return {
+def write_output(
+    entertainment_articles: list[dict],
+    cartoon: dict,
+    path: Path = OUTPUT_PATH,
+) -> None:
+    data = {
         "entertainment": entertainment_articles,
         "cartoon_of_the_day": cartoon,
     }
-
-
-def write_output(data: dict, path: Path = OUTPUT_PATH) -> None:
     path.write_text(
         json.dumps(data, ensure_ascii=False, indent=2),
         encoding="utf-8",
@@ -87,9 +91,10 @@ def main() -> None:
         page.goto(BASE_URL, wait_until="domcontentloaded")
 
         entertainment_articles = scrape_entertainment(page)
+        page.goto(BASE_URL, wait_until="domcontentloaded")
         cartoon = scrape_cartoon_of_the_day(page)
 
-        #write_output(build_output(entertainment_articles, cartoon))
+        write_output(entertainment_articles, cartoon)
 
         browser.close()
 

@@ -1,0 +1,46 @@
+Prompt 1:
+I am trying to write a webscraper using playwrite in the file @scraper.py . I am trying to scrape https://ekantipur.com. 
+
+The goal is to extract 5 articles from the entertainment("मनोरञ्जन") section. Here are the details of that specific section:
+1. navigate to nav element with text "मनोरञ्जन"
+
+
+Other section i want is Cartoon of the day(). here are the details:
+1. the section can be uniquely identified by a section tag with class: e-section
+2. find the element with कार्टुन text and navigate that link.
+
+the script should output to: output.json
+
+this concludes the project context.
+
+Remember the goal and context. 
+use headless=False
+use
+ensure_ascii=False when writing JSON
+
+Start by creating a scheleton for this scraper and feel free to ask me for further details when required. do not take decisions by making assumtions; Always clarify before taking actions.
+
+
+
+Prompt 2:
+starting with scraping entertainment_articles.
+the function should navigate to the entertainment page by clicking in मनोरञ्जन element. the page has the following structure:
+Articles are in: .category-wrapper
+Each Article card: .category
+image_url: .category-image>a
+article title: .category-description>h2
+
+extract only top 5 articles from that page
+
+Prompt 3:
+write script. no need to test value. debuging will be done mannually
+
+
+Inline prompt:
+edit this to extract the src from the given image tag ".category-image > a > figure > img"
+---
+<div class="category-image"><a href="https://ekantipur.com/entertainment/2026/05/19/debate-over-ai-use-heats-up-at-cannes-fears-of-endangering-films-very-existence-20-17.html"><figure><img class="loaded" alt="Debate over AI use heats up at Cannes, fears of endangering film's very existence" src="https://assets-cdn-api.ekantipur.com/thumb.php?src=https://assets-cdn.ekantipur.com/uploads/source/news/kantipur/2026/third-party/406204-01-02-1952026121741-1000x0.jpg&amp;w=701&amp;h=0"></figure></a></div>
+---
+the img url is in this format
+
+
